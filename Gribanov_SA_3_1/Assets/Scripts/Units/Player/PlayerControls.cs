@@ -62,6 +62,15 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""9e8459ac-8310-4da4-ae6f-fca88d75730c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -196,6 +205,17 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""action"": ""Shoot"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dbd9183f-3dcb-4843-a653-cebb3523a744"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -208,6 +228,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_GameMap_MovementPlayer2 = m_GameMap.FindAction("MovementPlayer2", throwIfNotFound: true);
         m_GameMap_ResetBall = m_GameMap.FindAction("ResetBall", throwIfNotFound: true);
         m_GameMap_Shoot = m_GameMap.FindAction("Shoot", throwIfNotFound: true);
+        m_GameMap_Pause = m_GameMap.FindAction("Pause", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -271,6 +292,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_GameMap_MovementPlayer2;
     private readonly InputAction m_GameMap_ResetBall;
     private readonly InputAction m_GameMap_Shoot;
+    private readonly InputAction m_GameMap_Pause;
     public struct GameMapActions
     {
         private @PlayerControls m_Wrapper;
@@ -279,6 +301,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         public InputAction @MovementPlayer2 => m_Wrapper.m_GameMap_MovementPlayer2;
         public InputAction @ResetBall => m_Wrapper.m_GameMap_ResetBall;
         public InputAction @Shoot => m_Wrapper.m_GameMap_Shoot;
+        public InputAction @Pause => m_Wrapper.m_GameMap_Pause;
         public InputActionMap Get() { return m_Wrapper.m_GameMap; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -300,6 +323,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Shoot.started -= m_Wrapper.m_GameMapActionsCallbackInterface.OnShoot;
                 @Shoot.performed -= m_Wrapper.m_GameMapActionsCallbackInterface.OnShoot;
                 @Shoot.canceled -= m_Wrapper.m_GameMapActionsCallbackInterface.OnShoot;
+                @Pause.started -= m_Wrapper.m_GameMapActionsCallbackInterface.OnPause;
+                @Pause.performed -= m_Wrapper.m_GameMapActionsCallbackInterface.OnPause;
+                @Pause.canceled -= m_Wrapper.m_GameMapActionsCallbackInterface.OnPause;
             }
             m_Wrapper.m_GameMapActionsCallbackInterface = instance;
             if (instance != null)
@@ -316,6 +342,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Shoot.started += instance.OnShoot;
                 @Shoot.performed += instance.OnShoot;
                 @Shoot.canceled += instance.OnShoot;
+                @Pause.started += instance.OnPause;
+                @Pause.performed += instance.OnPause;
+                @Pause.canceled += instance.OnPause;
             }
         }
     }
@@ -326,5 +355,6 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         void OnMovementPlayer2(InputAction.CallbackContext context);
         void OnResetBall(InputAction.CallbackContext context);
         void OnShoot(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
 }

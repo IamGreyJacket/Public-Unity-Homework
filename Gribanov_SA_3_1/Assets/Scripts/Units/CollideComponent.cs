@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿
 using UnityEngine;
 
 namespace Arkanoid.Units
@@ -7,15 +6,15 @@ namespace Arkanoid.Units
     public class CollideComponent : MonoBehaviour
     {
         [SerializeField, Tooltip("Переменная, указывающая на то, является ли объект мячиком.")]
-        private bool IsBall = false;
+        private bool isBall = false;
         private void OnCollisionEnter(Collision collision)
         {
             //шарик должен отражаться
-            if (IsBall)
+            if (isBall)
             {
-                var direction = Managers.GameManager.Self.World._direction;
+                var direction = Managers.GameManager.Self.World.Direction;
                 direction = Vector3.Reflect(direction, collision.GetContact(0).normal);
-                Managers.GameManager.Self.World._direction = direction;
+                Managers.GameManager.Self.World.Direction = direction;
             }
             else
             {

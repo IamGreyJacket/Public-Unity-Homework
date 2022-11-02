@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿
 using UnityEngine;
 
 namespace Arkanoid.Managers
@@ -7,10 +6,14 @@ namespace Arkanoid.Managers
     public class GameManager : MonoBehaviour
     {
         [SerializeField, Tooltip("Количество жизней на обоих игроков.")]
-        private int health = 3;
+        private int _health = 3;
+
         public static GameManager Self;
         [SerializeField, Tooltip("Ссылка на WorldManager (Work in Progress)")]
         public WorldManager World;
+        [SerializeField, Tooltip("Ссылка на контроллер паузы")]
+        private Assistants.PauseController _pause;
+
         private void Awake()
         {
             Self = this;
@@ -24,12 +27,14 @@ namespace Arkanoid.Managers
         // Update is called once per frame
         void Update()
         {
-            if (health <= 0 || World.BlockCount <= 0) GameOver();
+            if (_health <= 0 || World.BlockCount <= 0) GameOver();
         }
+
+        #region Game Management
 
         public void ReduceHealth()
         {
-            health -= 1;
+            _health -= 1;
         }
 
         public void GameOver()
@@ -47,5 +52,24 @@ namespace Arkanoid.Managers
         {
             World.ResetBall();
         }
+
+        public void PauseGame()
+        {
+            World.PauseGame();
+            _pause.gameObject.SetActive(true);
+        }
+        public void UnpauseGame()
+        {
+            World.UnpauseGame();
+        }
+
+        #endregion
+
+        #region Info Getter
+        public int GetHealth()
+        {
+            return _health;
+        }
+        #endregion
     }
 }
